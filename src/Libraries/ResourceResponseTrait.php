@@ -15,39 +15,38 @@ trait ResourceResponseTrait
 {
 
     /**
-     * @param ResponseInterface $data
-     * @return response
+     * @param array $data
+     * @return Diactoros\Response\JsonResponse
      */
     public function createdResponse(array $data)
     {
-        $response = new Diactoros\Response\JsonResponse($data,201,$this->getHeaders());
-        return $response;
+        return new Diactoros\Response\JsonResponse($data,201,$this->getHeaders());
     }
 
     /**
-     * @param ResponseInterface $data
-     * @return response
+     * @param array $data
+     * @return Diactoros\Response\JsonResponse
      */
-    public function showResponse($data)
+    public function showResponse(array $data)
     {
-        return new response($data,200,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse($data,200,$this->getHeaders());
     }
 
     /**
-     * @param ResponseInterface $data
-     * @return response
+     * @param array $data
+     * @return Diactoros\Response\JsonResponse
      */
-    public function listResponse($data)
+    public function listResponse(array $data)
     {
-        return new response($data,200,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse($data,2010,$this->getHeaders());
     }
 
     /**
-     * @return response
+     * @return Diactoros\Response\JsonResponse
      */
     public function notFoundResponse()
     {
-        return new response(404,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse(null,404,$this->getHeaders());
     }
 
     /**
@@ -55,15 +54,15 @@ trait ResourceResponseTrait
      */
     public function deletedResponse()
     {
-        return new response(204,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse(null,204,$this->getHeaders());
     }
 
     /**
-     * @param ResponseInterface $data
-     * @return response
+     * @param array $data
+     * @return Diactoros\Response\JsonResponse
      */
-    public function clientErrorResponse($data)
+    public function clientErrorResponse(array $data)
     {
-        return new response($data,422,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse($data,422,$this->getHeaders());
     }
 }

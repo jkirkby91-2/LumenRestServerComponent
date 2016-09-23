@@ -22,9 +22,8 @@ class PingController extends \Jkirkby91\LumenRestServerComponent\Http\Controller
             ->item($ping)
             ->transformWith(function($ping) { return ['server' => $ping['server'],'version' => $ping['server_version'], 'time' => $ping['server_time']];})
             ->serializeWith(new \Spatie\Fractal\ArraySerializer())
-            ->toJson();
+            ->toArray();
 
-
-        return new response(200,$this->getHeaders(),$resource);
+        return $this->showResponse($resource);
     }
 }
