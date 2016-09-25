@@ -2,6 +2,7 @@
 
 namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Jkirkby91\Boilers\RestServerBoiler\CrudControllerContract;
 use Jkirkby91\Boilers\RepositoryBoiler\CrudRepositoryContract AS CrudRepository;
 
@@ -10,9 +11,8 @@ use Jkirkby91\Boilers\RepositoryBoiler\CrudRepositoryContract AS CrudRepository;
  *
  * @package Jkirkby91\LumenRestServerComponent\Http\Controllers
  */
-abstract class CrudController extends RestController implements CrudControllerContract
+class CrudController extends RestController implements CrudControllerContract
 {
-    use CrudControllertrait;
 
     /**
      * @var
@@ -27,5 +27,25 @@ abstract class CrudController extends RestController implements CrudControllerCo
     public function __construct(CrudRepository $repository)
     {
         $this->repository       = $repository;
+    }
+
+    public function create(ServerRequestInterface $request)
+    {
+        // TODO: Implement create() method.
+    }
+
+    public function read($id)
+    {
+        // TODO: Implement read() method.
+    }
+
+    public function update(ServerRequestInterface $request)
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function delete($id)
+    {
+        // TODO: Implement delete() method.
     }
 }
