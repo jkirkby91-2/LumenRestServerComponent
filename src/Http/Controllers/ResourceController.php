@@ -2,7 +2,6 @@
 
 namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 
-use Zend\Diactoros;
 use Psr\Http\Message\ServerRequestInterface;
 use Jkirkby91\Boilers\RestServerBoiler\ResourceResponseContract;
 use Jkirkby91\Boilers\RestServerBoiler\ResourceControllerContract;
@@ -12,11 +11,12 @@ use Jkirkby91\Boilers\RepositoryBoiler\ResourceRepositoryContract AS ResourceRep
 
 /**
  * Class ResourceController
+ *
  * @package Jkirkby91\LumenRestServerComponent\Http\Controllers
+ * @author James Kirkby <jkirkby91@gmail.com>
  */
 abstract class ResourceController extends RestController implements ResourceControllerContract, ResourceResponseContract
 {
-
     /**
      * @var ResourceRepository
      */
@@ -70,7 +70,9 @@ abstract class ResourceController extends RestController implements ResourceCont
      */
     public function store(ServerRequestInterface $request)
     {
-        $data = $this->repository->store($request);
+        $entity = $request->getParsedBody();
+
+        $data = $this->repository->store($entity);
 
 //        try
 //        {
@@ -140,57 +142,5 @@ abstract class ResourceController extends RestController implements ResourceCont
         $this->repository->destory($id);
 
         return $this->deletedResponse();
-    }
-
-    /**
-     * @param array $data
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function createdResponse(array $data)
-    {
-        return new Diactoros\Response\JsonResponse($data,201,$this->getHeaders());
-    }
-
-    /**
-     * @param array $data
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function showResponse(array $data)
-    {
-        return new Diactoros\Response\JsonResponse($data,200,$this->getHeaders());
-    }
-
-    /**
-     * @param array $data
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function listResponse(array $data)
-    {
-        return new Diactoros\Response\JsonResponse($data,2010,$this->getHeaders());
-    }
-
-    /**
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function notFoundResponse()
-    {
-        return new Diactoros\Response\JsonResponse(null,404,$this->getHeaders());
-    }
-
-    /**
-     * @return mixed
-     */
-    public function deletedResponse()
-    {
-        return new Diactoros\Response\JsonResponse(null,204,$this->getHeaders());
-    }
-
-    /**
-     * @param array $data
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function clientErrorResponse(array $data)
-    {
-        return new Diactoros\Response\JsonResponse($data,422,$this->getHeaders());
     }
 }

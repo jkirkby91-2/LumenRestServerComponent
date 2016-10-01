@@ -3,6 +3,7 @@
 namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Jkirkby91\LumenRestServerComponent\Libraries\ResponseTrait;
 
 /**
  * Class RestController
@@ -14,6 +15,8 @@ use Illuminate\Routing\Controller;
  */
 abstract class RestController extends Controller
 {
+
+    use ResponseTrait;
 
     /**
      * @var array
