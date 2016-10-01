@@ -19,7 +19,7 @@ trait ResponseTrait
      */
     public function createdResponse(array $data)
     {
-        return new Diactoros\Response\JsonResponse($data,201,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse(json_encode($data),201,$this->getHeaders());
     }
 
     /**
@@ -28,7 +28,7 @@ trait ResponseTrait
      */
     public function showResponse(array $data)
     {
-        return new Diactoros\Response\JsonResponse($data,200,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse(json_encode($data),200,$this->getHeaders());
     }
 
     /**
@@ -37,7 +37,7 @@ trait ResponseTrait
      */
     public function listResponse(array $data)
     {
-        return new Diactoros\Response\JsonResponse($data,2010,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse(json_encode($data),2010,$this->getHeaders());
     }
 
     /**
@@ -62,6 +62,6 @@ trait ResponseTrait
      */
     public function clientErrorResponse(array $data)
     {
-        return new Diactoros\Response\JsonResponse($data,422,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse(json_encode($data),422,$this->getHeaders());
     }
 }

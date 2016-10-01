@@ -70,7 +70,6 @@ abstract class RestController extends Controller
      */
     public function getHeaders()
     {
-//        return array_merge($this->privateHeaders,$this->headers);
         return $this->headers;
     }
 }
