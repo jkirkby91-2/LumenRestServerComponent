@@ -10,7 +10,7 @@ namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
  */
 class PingController extends \Jkirkby91\LumenRestServerComponent\Http\Controllers\RestController
 {
-    use \Jkirkby91\LumenRestServerComponent\Libraries\ResourceResponseTrait;
+    use \Jkirkby91\LumenRestServerComponent\Libraries\ResponseTrait;
     /**
      * @return \GuzzleHttp\Psr7\Response
      */

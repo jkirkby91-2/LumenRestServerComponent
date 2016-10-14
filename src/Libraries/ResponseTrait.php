@@ -2,6 +2,7 @@
 
 namespace Jkirkby91\LumenRestServerComponent\Libraries;
 
+use Spatie\Fractal\Fractal;
 use Zend\Diactoros;
 
 /**
@@ -14,30 +15,30 @@ use Zend\Diactoros;
 trait ResponseTrait
 {
     /**
-     * @param array $data
+     * @param $data
      * @return Diactoros\Response\JsonResponse
      */
-    public function createdResponse(array $data)
+    public function createdResponse($data)
     {
-        return new Diactoros\Response\JsonResponse(json_encode($data),201,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse($data,201,$this->getHeaders());
     }
 
     /**
-     * @param array $data
+     * @param $data
      * @return Diactoros\Response\JsonResponse
      */
-    public function showResponse(array $data)
+    public function showResponse($data)
     {
-        return new Diactoros\Response\JsonResponse(json_encode($data),200,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse($data,200,$this->getHeaders());
     }
 
     /**
-     * @param array $data
+     * @param $data
      * @return Diactoros\Response\JsonResponse
      */
-    public function listResponse(array $data)
+    public function listResponse($data)
     {
-        return new Diactoros\Response\JsonResponse(json_encode($data),2010,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse($data,2010,$this->getHeaders());
     }
 
     /**
@@ -45,7 +46,11 @@ trait ResponseTrait
      */
     public function notFoundResponse()
     {
-        return new Diactoros\Response\JsonResponse(null,404,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse([
+            'status' => 'error',
+            'error' => 'Not Found',
+            'msg' => 'Resource Not Found.'
+        ],404,$this->getHeaders());
     }
 
     /**
@@ -53,15 +58,33 @@ trait ResponseTrait
      */
     public function deletedResponse()
     {
-        return new Diactoros\Response\JsonResponse(null,204,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse([
+            'status' => 'success',
+            'msg' => 'Successfully deleted resource.'
+        ],204,$this->getHeaders());
     }
 
     /**
-     * @param array $data
      * @return Diactoros\Response\JsonResponse
      */
-    public function clientErrorResponse(array $data)
+    public function clientErrorResponse()
     {
-        return new Diactoros\Response\JsonResponse(json_encode($data),422,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse([
+            'status' => 'error',
+            'error' => 'entity.invalid',
+            'msg' => 'Unprocessable Entity.'
+        ],422,$this->getHeaders());
+    }
+
+    /**
+     * @return Diactoros\Response\JsonResponse
+     */
+    public function UnauthorizedResponse()
+    {
+        return new Diactoros\Response\JsonResponse([
+            'status' => 'error',
+            'error' => 'invalid.credentials',
+            'msg' => 'Invalid Credentials.'
+        ],401,$this->getHeaders());
     }
 }

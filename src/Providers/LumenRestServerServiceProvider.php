@@ -3,7 +3,7 @@
 namespace Jkirkby91\LumenRestServerComponent\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+//use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Jkirkby91\IlluminateRequestPSR7Adapter\Middleware\PSR7AdapterMiddleware;
 
 /**
@@ -34,7 +34,6 @@ class LumenRestServerServiceProvider extends ServiceProvider
     {
         $this->registerConfigs();
         $this->registerServiceProviders();
-        $this->bindContractImplementations();
         $this->registerRoutes();
         $this->registerComponentMiddlewares();
         $this->registerControllers();
@@ -46,6 +45,7 @@ class LumenRestServerServiceProvider extends ServiceProvider
     public function registerConfigs()
     {
         //@TODO implement
+//        $this->app->configure('cors');
     }
 
     /**
@@ -53,27 +53,9 @@ class LumenRestServerServiceProvider extends ServiceProvider
      */
     public function registerServiceProviders()
     {
+//        $this->app->register(\Barryvdh\Cors\ServiceProvider::class);
+//        $this->app->register(\Jkirkby91\LumenPSR7Cors\Providers\LumenCorsServiceProvider::class);
         $this->app->register(\Spatie\Fractal\FractalLumenServiceProvider::class);
-    }
-
-    /**
-     * Bind our lumen implementations to our expected contracts
-     */
-    public function bindContractImplementations()
-    {
-        $this->app->bind('Psr\Http\Message\ServerRequestInterface', function ($app) {
-            return (new DiactorosFactory)->createRequest($this->app->make('request'));
-        });
-
-//        $this->app->bind(
-//            'Psr\Http\Message\ServerRequestInterface',
-//            'Zend\Diactoros\ServerRequest'
-//        );
-//
-//        $this->app->bind(
-//            'Psr\Http\Message\ResponseInterface',
-//            'Zend\Diactoros\Response'
-//        );
     }
 
     /**
@@ -89,7 +71,10 @@ class LumenRestServerServiceProvider extends ServiceProvider
      */
     public function registerComponentMiddlewares()
     {
+//        $this->app->middleware(\Barryvdh\Cors\HandleCors::class);
+//        $this->app->middleware(\Barryvdh\Cors\HandlePreflight::class);
         $this->app->middleware(PSR7AdapterMiddleware::class);
+        $this->app->middleware(\Jkirkby91\LumenPSR7Cors\Http\Middleware\Cors::class);
     }
 
     /**
@@ -98,7 +83,7 @@ class LumenRestServerServiceProvider extends ServiceProvider
     public function registerControllers()
     {
         // Let Laravel Ioc Container know about our Controller
-//        $this->app->make('Jkirkby91\RestServer\Http\Controllers\PingController');
+        $this->app->make('Jkirkby91\LumenRestServerComponent\Http\Controllers\PingController');
     }
 
 }

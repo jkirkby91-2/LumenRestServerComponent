@@ -3,9 +3,7 @@
 namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Jkirkby91\Boilers\RestServerBoiler\ResourceResponseContract;
 use Jkirkby91\Boilers\RestServerBoiler\ResourceControllerContract;
-use Jkirkby91\LumenRestServerComponent\Http\Controllers\RestController;
 use Jkirkby91\Boilers\RestServerBoiler\TransformerContract AS ObjectTransformer;
 use Jkirkby91\Boilers\RepositoryBoiler\ResourceRepositoryContract AS ResourceRepository;
 
@@ -15,7 +13,7 @@ use Jkirkby91\Boilers\RepositoryBoiler\ResourceRepositoryContract AS ResourceRep
  * @package Jkirkby91\LumenRestServerComponent\Http\Controllers
  * @author James Kirkby <jkirkby91@gmail.com>
  */
-abstract class ResourceController extends RestController implements ResourceControllerContract, ResourceResponseContract
+abstract class ResourceController extends \Jkirkby91\LumenRestServerComponent\Http\Controllers\RestController implements ResourceControllerContract
 {
     /**
      * @var ResourceRepository
@@ -42,8 +40,9 @@ abstract class ResourceController extends RestController implements ResourceCont
     /**
      * @return mixed
      */
-    public function index()
+    public function index(ServerRequestInterface $request)
     {
+//        dd($request->getParsedBody());
         return $this->listResponse($this->repository->all());
     }
 
@@ -55,11 +54,10 @@ abstract class ResourceController extends RestController implements ResourceCont
     {
         if($data = $this->repository->find($id))
         {
-            return Fractal()
+            return $this->showResponse(Fractal()
                 ->item($data)
                 ->transformWith($this->transformer)
-                ->serializeWith(new \Spatie\Fractal\ArraySerializer())
-                ->toJson();
+                ->serializeWith(new \Spatie\Fractal\ArraySerializer()));
         }
         throw new NotFoundHttpException;
     }
@@ -89,11 +87,11 @@ abstract class ResourceController extends RestController implements ResourceCont
 //            return $this->clientErrorResponse($data);
 //        }
 
-        return Fractal()
+        return $this->createdResponse(Fractal()
             ->item($data)
             ->transformWith($this->transformer)
             ->serializeWith(new \Spatie\Fractal\ArraySerializer())
-            ->toJson();
+            ->toJson());
 
     }
 

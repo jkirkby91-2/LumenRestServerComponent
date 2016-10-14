@@ -4,6 +4,7 @@ namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Jkirkby91\LumenRestServerComponent\Libraries\ResponseTrait;
+use Jkirkby91\Boilers\RestServerBoiler\ResourceResponseContract;
 
 /**
  * Class RestController
@@ -13,7 +14,7 @@ use Jkirkby91\LumenRestServerComponent\Libraries\ResponseTrait;
  * @package Jkirkby91\LumenRestServerComponent\Http\Controllers
  * @author James Kirkby <jkirkby91@gmail.com>
  */
-abstract class RestController extends Controller
+abstract class RestController extends Controller implements ResourceResponseContract
 {
 
     use ResponseTrait;
@@ -25,7 +26,7 @@ abstract class RestController extends Controller
         'Rest-Server'    => 'Jkirkby91\\LumenRestServerComponent',
         'Version'        => '0.0.1',
         'content-type'   =>  'text/json'
-    ];
+    ]; //@TODO hook headers into our responses
 
     /**
      * @var array
@@ -35,7 +36,7 @@ abstract class RestController extends Controller
     /**
      * @var \League\Fractal\Serializer\ArraySerializer
      */
-    public $serializer;
+    protected $serializer;
 
     /**
      * RestController constructor.
