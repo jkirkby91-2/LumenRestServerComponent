@@ -42,18 +42,6 @@ trait ResponseTrait
     }
 
     /**
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function notFoundResponse()
-    {
-        return new Diactoros\Response\JsonResponse([
-            'status' => 'error',
-            'error' => 'Not Found',
-            'msg' => 'Resource Not Found.'
-        ],404,$this->getHeaders());
-    }
-
-    /**
      * @return mixed
      */
     public function deletedResponse()
@@ -72,8 +60,20 @@ trait ResponseTrait
         return new Diactoros\Response\JsonResponse([
             'status' => 'error',
             'error' => 'entity.invalid',
-            'msg' => 'Unprocessable Entity.'
+            'msg' => 'Un-processable Entity.'
         ],422,$this->getHeaders());
+    }
+
+    /**
+     * @return Diactoros\Response\JsonResponse
+     */
+    public function notFoundResponse()
+    {
+        return new Diactoros\Response\JsonResponse([
+            'status' => 'error',
+            'error' => 'Not Found',
+            'msg' => 'Resource Not Found.'
+        ],404,$this->getHeaders());
     }
 
     /**
@@ -83,8 +83,8 @@ trait ResponseTrait
     {
         return new Diactoros\Response\JsonResponse([
             'status' => 'error',
-            'error' => 'invalid.credentials',
-            'msg' => 'Invalid Credentials.'
-        ],401,$this->getHeaders());
+            'error' => 'Unauthorized',
+            'msg' => 'Credentials dont match.'
+        ],403,$this->getHeaders());
     }
 }

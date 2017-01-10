@@ -52,8 +52,7 @@ abstract class RestController extends Controller implements ResourceResponseCont
      */
     public function item($item)
     {
-        $itemResource = fractal()->item($item,$this->transformer);
-        return $itemResource;
+        return fractal()->item($item,$this->transformer);
     }
 
     /**
@@ -62,8 +61,7 @@ abstract class RestController extends Controller implements ResourceResponseCont
      */
     public function collection($collection)
     {
-        $itemResource = fractal()->collection($collection,$this->transformer);
-        return $itemResource;
+        return fractal()->collection($collection,$this->transformer);
     }
 
     /**
