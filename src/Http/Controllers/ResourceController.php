@@ -107,6 +107,8 @@ abstract class ResourceController extends \Jkirkby91\LumenRestServerComponent\Ht
             throw new NotFoundHttpException;
         }
 
+            //@TODO DO THIS IDIOT
+
 //        try
 //        {
 //            $v = \Validator::make($request->all(), $this->validationRules);
@@ -123,7 +125,12 @@ abstract class ResourceController extends \Jkirkby91\LumenRestServerComponent\Ht
 //        }
 
         $this->repository->update($request->all());
-        return $this->response()->item($data,$this->transformer);
+    
+        return $this->createdResponse(Fractal()
+            ->item($data)
+            ->transformWith($this->transformer)
+            ->serializeWith(new \Spatie\Fractal\ArraySerializer())
+            ->toJson());    
     }
 
     /**
