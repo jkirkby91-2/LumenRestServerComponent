@@ -101,7 +101,10 @@ abstract class ResourceController extends \Jkirkby91\LumenRestServerComponent\Ht
      * @param $id
      * @return mixed
      */
-    abstract public function update(ServerRequestInterface $request,$id);
+    public function update(ServerRequestInterface $request,$id)
+    {
+        return null;
+    }
 
 
     /**
