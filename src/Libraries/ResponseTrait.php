@@ -55,12 +55,12 @@ trait ResponseTrait
     /**
      * @return Diactoros\Response\JsonResponse
      */
-    public function clientErrorResponse()
+    public function clientErrorResponse($msg = 'Un-processable Entity.')
     {
         return new Diactoros\Response\JsonResponse([
             'status' => 'error',
             'error' => 'entity.invalid',
-            'msg' => 'Un-processable Entity.'
+            'msg' => $msg
         ],422,$this->getHeaders());
     }
 

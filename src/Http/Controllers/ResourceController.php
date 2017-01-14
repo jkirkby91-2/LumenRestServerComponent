@@ -72,6 +72,7 @@ abstract class ResourceController extends \Jkirkby91\LumenRestServerComponent\Ht
 
         $data = $this->repository->store($entity);
 
+        //@TODO SOME VALIDTION
 //        try
 //        {
 //            $v = \Validator::make($data, $this->validationRules);
@@ -100,38 +101,8 @@ abstract class ResourceController extends \Jkirkby91\LumenRestServerComponent\Ht
      * @param $id
      * @return mixed
      */
-    public function update(ServerRequestInterface $request,$id)
-    {
-        if(!$data = $this->repository->find($id))
-        {
-            throw new NotFoundHttpException;
-        }
+    abstract public function update(ServerRequestInterface $request,$id);
 
-            //@TODO DO THIS IDIOT
-
-//        try
-//        {
-//            $v = \Validator::make($request->all(), $this->validationRules);
-//            if($v->fails())
-//            {
-//                throw new \Exception("ValidationException");
-//            }
-//            $this->repository->update($request->all());
-//            return $this->showResponse($data);
-//        }catch(\Exception $ex)
-//        {
-//            $data = ['form_validations' => $v->errors(), 'exception' => $ex->getMessage()];
-//            return $this->clientErrorResponse($data);
-//        }
-
-        $this->repository->update($request->all());
-    
-        return $this->createdResponse(Fractal()
-            ->item($data)
-            ->transformWith($this->transformer)
-            ->serializeWith(new \Spatie\Fractal\ArraySerializer())
-            ->toJson());    
-    }
 
     /**
      * @param $id
