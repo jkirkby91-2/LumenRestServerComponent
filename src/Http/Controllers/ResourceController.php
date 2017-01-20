@@ -4,6 +4,7 @@ namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Jkirkby91\Boilers\RestServerBoiler\ResourceControllerContract;
+use Jkirkby91\Boilers\RestServerBoiler\Exceptions\NotFoundHttpException;
 use Jkirkby91\Boilers\RestServerBoiler\TransformerContract AS ObjectTransformer;
 use Jkirkby91\Boilers\RepositoryBoiler\ResourceRepositoryContract AS ResourceRepository;
 
@@ -42,7 +43,6 @@ abstract class ResourceController extends \Jkirkby91\LumenRestServerComponent\Ht
      */
     public function index(ServerRequestInterface $request)
     {
-//        dd($request->getParsedBody());
         return $this->listResponse($this->repository->all());
     }
 
@@ -59,7 +59,7 @@ abstract class ResourceController extends \Jkirkby91\LumenRestServerComponent\Ht
                 ->transformWith($this->transformer)
                 ->serializeWith(new \Spatie\Fractal\ArraySerializer()));
         }
-        throw new NotFoundHttpException;
+        throw new NotFoundHttpException();
     }
 
     /**
@@ -99,11 +99,14 @@ abstract class ResourceController extends \Jkirkby91\LumenRestServerComponent\Ht
     /**
      * @param ServerRequestInterface $request
      * @param $id
-     * @return mixed
+     * @return mixed|void
+     * @throws \Exception
+     * @TODO MAKE THIS AN ABSTRACT FUNCTION  BUT THEN ALL SUB CLASSES MUST IMPLEMENT
      */
     public function update(ServerRequestInterface $request,$id)
     {
-        return null;
+        trigger_error("Deprecated function called.", E_USER_NOTICE);
+        throw new \Exception('function deprecated');
     }
 
 
