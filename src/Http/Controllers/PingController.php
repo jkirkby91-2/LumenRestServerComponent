@@ -2,6 +2,8 @@
 
 namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 
+use Spatie\Fractal\ArraySerializer as ArraySerialization;
+
 /**
  * Class PingController
  *
@@ -21,7 +23,7 @@ class PingController extends \Jkirkby91\LumenRestServerComponent\Http\Controller
         $resource = fractal()
             ->item($ping)
             ->transformWith(function($ping) { return ['server' => $ping['server'],'version' => $ping['server_version'], 'time' => $ping['server_time']];})
-            ->serializeWith(new \Spatie\Fractal\ArraySerializer())
+            ->serializeWith(new ArraySerialization())
             ->toArray();
 
         return $this->showResponse($resource);

@@ -7,6 +7,7 @@ use Jkirkby91\Boilers\RestServerBoiler\ResourceControllerContract;
 use Jkirkby91\Boilers\RestServerBoiler\Exceptions\NotFoundHttpException;
 use Jkirkby91\Boilers\RestServerBoiler\TransformerContract AS ObjectTransformer;
 use Jkirkby91\Boilers\RepositoryBoiler\ResourceRepositoryContract AS ResourceRepository;
+use Spatie\Fractal\ArraySerializer AS ArraySerialization;
 
 /**
  * Class ResourceController
@@ -57,7 +58,7 @@ abstract class ResourceController extends \Jkirkby91\LumenRestServerComponent\Ht
             return $this->showResponse(Fractal()
                 ->item($data)
                 ->transformWith($this->transformer)
-                ->serializeWith(new \Spatie\Fractal\ArraySerializer()));
+                ->serializeWith(new ArraySerialization()));
         }
         throw new NotFoundHttpException();
     }
@@ -91,7 +92,7 @@ abstract class ResourceController extends \Jkirkby91\LumenRestServerComponent\Ht
         return $this->createdResponse(Fractal()
             ->item($data)
             ->transformWith($this->transformer)
-            ->serializeWith(new \Spatie\Fractal\ArraySerializer())
+            ->serializeWith(new ArraySerialization())
             ->toJson());
 
     }

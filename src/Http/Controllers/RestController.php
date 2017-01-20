@@ -5,6 +5,7 @@ namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 use Illuminate\Routing\Controller;
 use Jkirkby91\LumenRestServerComponent\Libraries\ResponseTrait;
 use Jkirkby91\Boilers\RestServerBoiler\ResourceResponseContract;
+use Spatie\Fractal\ArraySerializer as ArraySerialization;
 
 /**
  * Class RestController
@@ -43,7 +44,7 @@ abstract class RestController extends Controller implements ResourceResponseCont
      */
     public function __construct()
     {
-        $this->serializer = new \Spatie\Fractal\ArraySerializer;
+        $this->serializer = new ArraySerialization();
     }
 
     /**
