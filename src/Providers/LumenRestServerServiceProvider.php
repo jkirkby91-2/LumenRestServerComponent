@@ -33,7 +33,6 @@ class LumenRestServerServiceProvider extends ServiceProvider
     {
         $this->registerServiceProviders();
         $this->registerRoutes();
-        $this->registerComponentMiddlewares();
         $this->registerControllers();
     }
 
@@ -42,7 +41,7 @@ class LumenRestServerServiceProvider extends ServiceProvider
      */
     public function registerServiceProviders()
     {
-        $this->app->register(\Jkirkby91\IlluminateRequestPSR7Adapter\Providers\IlluminateRequestPSR7AdapterServiceProvider::class);
+        $this->app->register(\Jkirkby91\IlluminateRequestPSR7Adapter\Providers\Psr7AdapterServiceProvider::class);
         $this->app->register(\Jkirkby91\LumenPSR7Cors\Providers\LumenCorsServiceProvider::class);
         $this->app->register(\Spatie\Fractal\FractalLumenServiceProvider::class);
     }
