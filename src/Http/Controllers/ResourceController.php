@@ -8,6 +8,7 @@ use Jkirkby91\Boilers\RestServerBoiler\Exceptions\NotFoundHttpException;
 use Jkirkby91\Boilers\RestServerBoiler\TransformerContract AS ObjectTransformer;
 use Jkirkby91\Boilers\RepositoryBoiler\ResourceRepositoryContract AS ResourceRepository;
 use Spatie\Fractal\ArraySerializer AS ArraySerialization;
+use Jkirkby91\LumenRestServerComponent\Http\Controllers\RestController;
 
 /**
  * Class ResourceController
@@ -15,7 +16,7 @@ use Spatie\Fractal\ArraySerializer AS ArraySerialization;
  * @package Jkirkby91\LumenRestServerComponent\Http\Controllers
  * @author James Kirkby <jkirkby91@gmail.com>
  */
-abstract class ResourceController extends \Jkirkby91\LumenRestServerComponent\Http\Controllers\RestController implements ResourceControllerContract
+abstract class ResourceController extends RestController implements ResourceControllerContract
 {
     /**
      * @var ResourceRepository
