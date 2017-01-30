@@ -62,5 +62,4 @@ class LumenRestServerServiceProvider extends ServiceProvider
         // Let Laravel Ioc Container know about our Controller
         $this->app->make('Jkirkby91\LumenRestServerComponent\Http\Controllers\PingController');
     }
-
 }

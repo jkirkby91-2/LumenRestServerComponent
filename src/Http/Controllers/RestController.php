@@ -44,6 +44,10 @@ abstract class RestController extends Controller implements ResourceResponseCont
      */
     public function __construct()
     {
+        // $this->headers->set('Rest-Server',$this->privateHeaders['Rest-Server']);
+        // $this->headers->set('Version',$this->privateHeaders['Version']);
+        // $this->headers->set('content-type',$this->privateHeaders['content-type']);
+        // $this->withHeaders($this->privateHeaders);
         $this->serializer = new ArraySerialization();
     }
 
@@ -71,5 +75,10 @@ abstract class RestController extends Controller implements ResourceResponseCont
     public function getHeaders()
     {
         return $this->headers;
+    }
+
+    public function setHeaders(array $headers)
+    {
+        array_push($this->headers, $headers);
     }
 }
