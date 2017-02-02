@@ -2,8 +2,8 @@
 
 namespace Jkirkby91\LumenRestServerComponent\Libraries;
 
-use Spatie\Fractal\Fractal;
 use Zend\Diactoros;
+use Spatie\Fractal\Fractal;
 
 /**
  * Class ResponseTrait
@@ -38,17 +38,28 @@ trait ResponseTrait
      */
     public function listResponse($data)
     {
-        return new Diactoros\Response\JsonResponse($data,2010,$this->getHeaders());
+        return new Diactoros\Response\JsonResponse($data,201,$this->getHeaders());
     }
 
     /**
-     * @return mixed
+     * @return Diactoros\Response\JsonResponse
      */
     public function deletedResponse()
     {
         return new Diactoros\Response\JsonResponse([
             'status' => 'success',
             'msg' => 'Successfully deleted resource.'
+        ],204,$this->getHeaders());
+    }
+
+    /**
+     * @return Diactoros\Response\JsonResponse
+     */
+    public function completedResponse()
+    {
+        return new Diactoros\Response\JsonResponse([
+            'status' => 'success',
+            'msg' => 'Successfully completed response.'
         ],204,$this->getHeaders());
     }
 
@@ -86,5 +97,27 @@ trait ResponseTrait
             'error' => 'Unauthorized',
             'msg' => 'Credentials dont match.'
         ],403,$this->getHeaders());
+    }
+
+    /**
+     * @param $msg
+     * @return Diactoros\Response\JsonResponse
+     */
+    public function serverErrorResponse($msg = 'Internal Server Error')
+    {        
+        return new Diactoros\Response\JsonResponse([
+            'status' => 'error',
+            'error' => 'Server Error',
+            'msg' => $msg
+        ],500,$this->getHeaders());
+    }
+
+    public function exceptionResponse($code,$msg)
+    {
+        return new Diactoros\Response\JsonResponse([
+            'status' => 'error',
+            'error'  => $code,
+            'msg'    => $msg
+        ],$code,$this->getHeaders());
     }
 }
