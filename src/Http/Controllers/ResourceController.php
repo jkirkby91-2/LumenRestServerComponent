@@ -3,12 +3,12 @@
 namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Spatie\Fractal\ArraySerializer AS ArraySerialization;
 use Jkirkby91\Boilers\RestServerBoiler\ResourceControllerContract;
+use Jkirkby91\LumenRestServerComponent\Http\Controllers\RestController;
 use Jkirkby91\Boilers\RestServerBoiler\Exceptions\NotFoundHttpException;
 use Jkirkby91\Boilers\RestServerBoiler\TransformerContract AS ObjectTransformer;
 use Jkirkby91\Boilers\RepositoryBoiler\ResourceRepositoryContract AS ResourceRepository;
-use Spatie\Fractal\ArraySerializer AS ArraySerialization;
-use Jkirkby91\LumenRestServerComponent\Http\Controllers\RestController;
 
 /**
  * Class ResourceController
@@ -45,7 +45,41 @@ abstract class ResourceController extends RestController implements ResourceCont
      */
     public function index(ServerRequestInterface $request)
     {
-        return $this->listResponse($this->repository->all());
+        $payload = $request->getQueryParams();
+
+        if(!isset($payload['page']) || is_null($payload['page'])) {
+            $page = 1;
+        } else {
+            $page = filter_var($payload['page'],FILTER_SANITIZE_STRING);
+        }
+
+        try {
+            //@TODO implement softdelete and search on criteria that is still active
+            $results = $this->repository->findBy([]);
+        } catch (ORMInvalidArgumentException $e){
+            $this->clientErrorResponse('Invalid Search Criteria');
+        } catch (ORMException $e){
+            return $this->serverErrorResponse();
+        }
+        
+        try {
+            $paginatedResults = $this->repository->lumenPaginatedQuery($results,$page);
+        } catch (\Exception $e){
+            return $this->serverErrorResponse();
+        }
+
+        $paginatedResults = $paginatedResults->toArray();
+
+        if(isset($paginatedResults))
+        {
+            $paginatedResults['data'] = Fractal()
+                ->collection($paginatedResults['data'])
+                ->transformWith($this->transformer)
+                ->serializeWith(new ArraySerialization());
+            return $this->showResponse($paginatedResults);
+        } else {
+            return $this->notFoundResponse();
+        }        
     }
 
     /**
