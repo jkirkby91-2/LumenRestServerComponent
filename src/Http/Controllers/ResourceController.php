@@ -104,9 +104,12 @@ abstract class ResourceController extends RestController implements ResourceCont
      */
     public function store(ServerRequestInterface $request)
     {
-        $entity = $request->getParsedBody();
+        //@TODO make function abstact
 
-        $data = $this->repository->store($entity);
+
+        // $entity = $request->getParsedBody();
+
+        // $data = $this->repository->store($entity);
 
         //@TODO SOME VALIDTION
 //        try
@@ -124,11 +127,11 @@ abstract class ResourceController extends RestController implements ResourceCont
 //            return $this->clientErrorResponse($data);
 //        }
 
-        return $this->createdResponse(Fractal()
-            ->item($data)
-            ->transformWith($this->transformer)
-            ->serializeWith(new ArraySerialization())
-            ->toJson());
+        // return $this->createdResponse(Fractal()
+        //     ->item($data)
+        //     ->transformWith($this->transformer)
+        //     ->serializeWith(new ArraySerialization())
+        //     ->toJson());
 
     }
 
@@ -141,6 +144,7 @@ abstract class ResourceController extends RestController implements ResourceCont
      */
     public function update(ServerRequestInterface $request,$id)
     {
+        //@TODO make function abstact
         trigger_error("Deprecated function called.", E_USER_NOTICE);
         throw new \Exception('function deprecated');
     }
