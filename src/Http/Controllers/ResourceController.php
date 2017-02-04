@@ -7,6 +7,7 @@ use Spatie\Fractal\ArraySerializer AS ArraySerialization;
 use Jkirkby91\Boilers\RestServerBoiler\ResourceControllerContract;
 use Jkirkby91\LumenRestServerComponent\Http\Controllers\RestController;
 use Jkirkby91\Boilers\RestServerBoiler\Exceptions\NotFoundHttpException;
+use Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnauthorizedHttpException;
 use Jkirkby91\Boilers\RestServerBoiler\TransformerContract AS ObjectTransformer;
 use Jkirkby91\Boilers\RepositoryBoiler\ResourceRepositoryContract AS ResourceRepository;
 
@@ -18,6 +19,8 @@ use Jkirkby91\Boilers\RepositoryBoiler\ResourceRepositoryContract AS ResourceRep
  */
 abstract class ResourceController extends RestController implements ResourceControllerContract
 {
+    public $user;    
+
     /**
      * @var ResourceRepository
      */
@@ -27,6 +30,7 @@ abstract class ResourceController extends RestController implements ResourceCont
      * @var ObjectTransformer
      */
     protected $transformer;
+
 
     /**
      * RestController constructor.
@@ -38,6 +42,8 @@ abstract class ResourceController extends RestController implements ResourceCont
     {
         $this->repository       = $repository;
         $this->transformer      = $objectTransformer;
+
+        $this->user = app()->make('auth')->user();        
     }
 
     /**
@@ -45,13 +51,7 @@ abstract class ResourceController extends RestController implements ResourceCont
      */
     public function index(ServerRequestInterface $request)
     {
-        $payload = $request->getQueryParams();
-
-        if(!isset($payload['page']) || is_null($payload['page'])) {
-            $page = 1;
-        } else {
-            $page = filter_var($payload['page'],FILTER_SANITIZE_STRING);
-        }
+        $page = $this->getPaginationPageFromRequest($request);
 
         try {
             //@TODO implement softdelete and search on criteria that is still active
@@ -76,7 +76,7 @@ abstract class ResourceController extends RestController implements ResourceCont
                 ->collection($paginatedResults['data'])
                 ->transformWith($this->transformer)
                 ->serializeWith(new ArraySerialization());
-            return $this->showResponse($paginatedResults);
+            return $this->listResponse($paginatedResults);
         } else {
             return $this->notFoundResponse();
         }        
@@ -149,7 +149,6 @@ abstract class ResourceController extends RestController implements ResourceCont
         throw new \Exception('function deprecated');
     }
 
-
     /**
      * @param $id
      * @return mixed
@@ -164,5 +163,34 @@ abstract class ResourceController extends RestController implements ResourceCont
         $this->repository->destory($id);
 
         return $this->deletedResponse();
+    }
+
+    public function getPaginationPageFromRequest(ServerRequestInterface $request)
+    {
+        $queryParams = $request->getQueryParams();
+
+        if(!isset($queryParams['page']) || is_null($queryParams['page'])) {
+            $page = 1;
+        } else {
+            $page = filter_var($queryParams['page'],FILTER_SANITIZE_STRING);
+        }  
+
+        return $page;
+    }
+
+    public function validateRequestedUserContentPath($uid)
+    {
+        if($uid != $this->user->getId())
+        {
+            throw new UnauthorizedHttpException;
+        }    
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRequestUser()
+    {
+        return $this->user;
     }
 }
