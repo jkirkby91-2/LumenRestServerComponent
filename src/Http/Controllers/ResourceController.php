@@ -19,8 +19,6 @@ use Jkirkby91\Boilers\RepositoryBoiler\ResourceRepositoryContract AS ResourceRep
  */
 abstract class ResourceController extends RestController implements ResourceControllerContract
 {
-    public $user;    
-
     /**
      * @var ResourceRepository
      */
@@ -40,10 +38,9 @@ abstract class ResourceController extends RestController implements ResourceCont
      */
     public function __construct(ResourceRepository $repository, ObjectTransformer $objectTransformer)
     {
-        $this->repository       = $repository;
-        $this->transformer      = $objectTransformer;
-
-        $this->user = app()->make('auth')->user();        
+        parent::__construct();
+        $this->repository   = $repository;
+        $this->transformer  = $objectTransformer;
     }
 
     /**
@@ -63,23 +60,14 @@ abstract class ResourceController extends RestController implements ResourceCont
         }
         
         try {
-            $paginatedResults = $this->repository->lumenPaginatedQuery($results,$page);
-        } catch (\Exception $e){
+            $paginatedResults = $this->paginateResults($results,$page);
+        } catch (UnprocessableEntityException $e) {
             return $this->serverErrorResponse();
+        } catch (NotFoundHttpException $e) {
+            return $this->notFoundResponse();
         }
 
-        $paginatedResults = $paginatedResults->toArray();
-
-        if(isset($paginatedResults))
-        {
-            $paginatedResults['data'] = Fractal()
-                ->collection($paginatedResults['data'])
-                ->transformWith($this->transformer)
-                ->serializeWith(new ArraySerialization());
-            return $this->listResponse($paginatedResults);
-        } else {
-            return $this->notFoundResponse();
-        }        
+        return $this->showResponse($paginatedResults);
     }
 
     /**
@@ -90,12 +78,15 @@ abstract class ResourceController extends RestController implements ResourceCont
     {
         if($data = $this->repository->find($id))
         {
-            return $this->showResponse(Fractal()
+            $entity = Fractal()
                 ->item($data)
                 ->transformWith($this->transformer)
-                ->serializeWith(new ArraySerialization()));
+                ->serializeWith(new ArraySerialization());
+        } else {
+            throw new NotFoundHttpException();
         }
-        throw new NotFoundHttpException();
+
+        return $this->showResponse($entity);
     }
 
     /**
@@ -163,34 +154,5 @@ abstract class ResourceController extends RestController implements ResourceCont
         $this->repository->destory($id);
 
         return $this->deletedResponse();
-    }
-
-    public function getPaginationPageFromRequest(ServerRequestInterface $request)
-    {
-        $queryParams = $request->getQueryParams();
-
-        if(!isset($queryParams['page']) || is_null($queryParams['page'])) {
-            $page = 1;
-        } else {
-            $page = filter_var($queryParams['page'],FILTER_SANITIZE_STRING);
-        }  
-
-        return $page;
-    }
-
-    public function validateRequestedUserContentPath($uid)
-    {
-        if($uid != $this->user->getId())
-        {
-            throw new UnauthorizedHttpException;
-        }    
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRequestUser()
-    {
-        return $this->user;
     }
 }

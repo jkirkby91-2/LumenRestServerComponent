@@ -38,6 +38,8 @@ trait ResponseTrait
      */
     public function listResponse($data)
     {
+        trigger_error("Deprecated function called.", E_USER_NOTICE);
+        throw new \Exception('function deprecated');
         return new Diactoros\Response\JsonResponse($data,201,$this->getHeaders());
     }
 

@@ -33,7 +33,6 @@ class LumenRestServerServiceProvider extends ServiceProvider
     {
         $this->registerServiceProviders();
         $this->registerRoutes();
-        $this->registerControllers();
     }
 
     /**
@@ -52,14 +51,5 @@ class LumenRestServerServiceProvider extends ServiceProvider
     public function registerRoutes()
     {
         include __DIR__.'/../Http/routes.php';
-    }
-
-    /**
-     *Register any component controllers
-     */
-    public function registerControllers()
-    {
-        // Let Laravel Ioc Container know about our Controller
-        $this->app->make('Jkirkby91\LumenRestServerComponent\Http\Controllers\PingController');
     }
 }

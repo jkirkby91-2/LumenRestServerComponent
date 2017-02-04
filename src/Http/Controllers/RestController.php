@@ -3,9 +3,13 @@
 namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Psr\Http\Message\ServerRequestInterface;
+use Spatie\Fractal\ArraySerializer as ArraySerialization;
 use Jkirkby91\LumenRestServerComponent\Libraries\ResponseTrait;
 use Jkirkby91\Boilers\RestServerBoiler\ResourceResponseContract;
-use Spatie\Fractal\ArraySerializer as ArraySerialization;
+use Jkirkby91\Boilers\RestServerBoiler\Exceptions\NotFoundHttpException;
+use Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnauthorizedHttpException;
+use Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException;
 
 /**
  * Class RestController
@@ -20,13 +24,15 @@ abstract class RestController extends Controller implements ResourceResponseCont
 
     use ResponseTrait;
 
+    public $user;    
+
     /**
      * @var array
      */
     private $privateHeaders = [
         'Rest-Server'    => 'Jkirkby91\\LumenRestServerComponent',
         'Version'        => '0.0.1',
-        'content-type'   =>  'text/json'
+        'content-type'   => 'text/json'
     ]; //@TODO hook headers into our responses
 
     /**
@@ -49,6 +55,7 @@ abstract class RestController extends Controller implements ResourceResponseCont
         // $this->headers->set('content-type',$this->privateHeaders['content-type']);
         // $this->withHeaders($this->privateHeaders);
         $this->serializer = new ArraySerialization();
+        $this->user = app()->make('auth')->user();
     }
 
     /**
@@ -66,7 +73,7 @@ abstract class RestController extends Controller implements ResourceResponseCont
      */
     public function collection($collection)
     {
-        return fractal()->collection($collection,$this->transformer);
+        return fractal()->collection($collection);
     }
 
     /**
@@ -81,4 +88,55 @@ abstract class RestController extends Controller implements ResourceResponseCont
     {
         array_push($this->headers, $headers);
     }
+
+    public function paginateResults($results,$page)
+    {
+       try {
+            $paginatedResults = $this->repository->lumenPaginatedQuery($results,$page);
+        } catch (\Exception $e){
+            throw new UnprocessableEntityException($e->getMessage());
+        }
+
+        $paginatedResults = $paginatedResults->toArray();
+
+        if(isset($paginatedResults))
+        {
+            $paginatedResults['data'] = $this->collection($paginatedResults['data'])
+                ->transformWith($this->transformer)
+                ->serializeWith(new ArraySerialization());
+            return $paginatedResults;
+        } else {
+            throw new NotFoundHttpException;
+        }         
+    }
+
+    public function getPaginationPageFromRequest(ServerRequestInterface $request)
+    {
+        $queryParams = $request->getQueryParams();
+
+        if(!isset($queryParams['page']) || is_null($queryParams['page'])) {
+            $page = 1;
+        } else {
+            $page = filter_var($queryParams['page'],FILTER_SANITIZE_STRING);
+        }  
+
+        return $page;
+    }
+
+    public function validateRequestedUserContentPath($uid)
+    {
+        // return dd($this->user->getId());
+        if($uid != $this->user->getId())
+        {
+            throw new UnauthorizedHttpException;
+        }    
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRequestUser()
+    {
+        return $this->user;
+    }    
 }
