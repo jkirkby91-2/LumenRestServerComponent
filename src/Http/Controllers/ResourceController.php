@@ -29,7 +29,6 @@ abstract class ResourceController extends RestController implements ResourceCont
      */
     protected $transformer;
 
-
     /**
      * RestController constructor.
      *
@@ -52,7 +51,7 @@ abstract class ResourceController extends RestController implements ResourceCont
 
         try {
             //@TODO implement softdelete and search on criteria that is still active
-            $results = $this->repository->findBy([]);
+            $results = $this->repository->findBy([],['id'=>'desc']);
         } catch (ORMInvalidArgumentException $e){
             $this->clientErrorResponse('Invalid Search Criteria');
         } catch (ORMException $e){
