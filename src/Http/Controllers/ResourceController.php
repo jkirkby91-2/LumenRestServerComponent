@@ -78,10 +78,9 @@ abstract class ResourceController extends RestController implements ResourceCont
     {
         if($data = $this->repository->find($id))
         {
-            $entity = Fractal()
-                ->item($data)
-                ->transformWith($this->transformer)
-                ->serializeWith(new ArraySerialization());
+            $entity = $this->item($data)
+                        ->transformWith($this->transformer)
+                        ->serializeWith(new ArraySerialization());
         } else {
             throw new NotFoundHttpException();
         }
