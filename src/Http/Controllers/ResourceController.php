@@ -90,12 +90,14 @@ abstract class ResourceController extends RestController implements ResourceCont
     /**
      * @param ServerRequestInterface $request
      * @return mixed
+     * @TODO MAKE THIS AN ABSTRACT FUNCTION  BUT THEN ALL SUB CLASSES MUST IMPLEMENT 
      */
     public function store(ServerRequestInterface $request)
     {
-        //@TODO make function abstact
 
-
+        trigger_error("Deprecated function called.", E_USER_NOTICE);
+        throw new \Exception('function deprecated');
+        
         // $entity = $request->getParsedBody();
 
         // $data = $this->repository->store($entity);
@@ -131,7 +133,7 @@ abstract class ResourceController extends RestController implements ResourceCont
      * @throws \Exception
      * @TODO MAKE THIS AN ABSTRACT FUNCTION  BUT THEN ALL SUB CLASSES MUST IMPLEMENT
      */
-    public function update(ServerRequestInterface $request,$id)
+    public function update(ServerRequestInterface $request, $id)
     {
         //@TODO make function abstact
         trigger_error("Deprecated function called.", E_USER_NOTICE);
