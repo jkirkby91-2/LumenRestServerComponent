@@ -2,30 +2,30 @@
 
 namespace Jkirkby91\LumenRestServerComponent\Http\Middleware;
 
+use Closure;
 use Psr\Http\Message\ServerRequestInterface;
-use Jkirkby91\LumenRestServerComponent\Contracts\MiddlewareContract;
-use Jkirkby91\LumenRestServerComponent\Http\Middleware\AbstractValidateRequest;
+use Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException;
 
-/**
- * Class ValidateRequest
- *
- * @package Jkirkby91\LumenRestServerComponent\Http\Middleware
- * @author James Kirkby <hello@jameskirkby.com>
- */
-abstract class ValidateRequestMiddleware extends AbstractValidateRequest implements MiddlewareContract
+class ValidateRequestMiddleware
 {
 
-	protected $validator;
-
     /**
-     * @param ServerRequestInterface $request
-     * @return mixed|void
+     * Run the request filter.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string  $role
+     * @return mixed
      */
-    public function ValidateRequest(ServerRequestInterface $request)
+    public function handle(ServerRequestInterface $request, Closure $next,$requestValidator)
     {
-        $this->validator = app()->make('validator');
-        $method =$request->getMethod();
-        $rules = $this->rules();
-        $this->validator->validate($request->getParsedBody(),$rules[$method]);
+        $factory = app()->make('validateRequestFactory');
+
+        $validator = $factory::createRequstValidation($requestValidator);
+
+        $validator->ValidateRequest($request);
+
+        return $next($request);
     }
+
 }

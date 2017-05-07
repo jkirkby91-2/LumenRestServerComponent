@@ -4,6 +4,7 @@ namespace Jkirkby91\LumenRestServerComponent\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Jkirkby91\IlluminateRequestPSR7Adapter\Middleware\PSR7AdapterMiddleware;
+use Jkirkby91\LumenRestServerComponent\Http\Requests\ValidateRequestFactory;
 
 /**
  * Class RestServerServiceProvider
@@ -21,7 +22,7 @@ class LumenRestServerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+      $this->app['validateRequestFactory'] = new ValidateRequestFactory;
     }
 
     /**
@@ -32,6 +33,7 @@ class LumenRestServerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerServiceProviders();
+        $this->registerMiddleware();
         $this->registerRoutes();
     }
 
@@ -43,6 +45,14 @@ class LumenRestServerServiceProvider extends ServiceProvider
         $this->app->register(\Jkirkby91\IlluminateRequestPSR7Adapter\Providers\Psr7AdapterServiceProvider::class);
         $this->app->register(\Jkirkby91\LumenPSR7Cors\Providers\LumenCorsServiceProvider::class);
         $this->app->register(\Spatie\Fractal\FractalLumenServiceProvider::class);
+    }
+
+    /**
+     * Register middleware
+     */
+    public function registerMiddleware()
+    {
+      $this->app->routeMiddleware(['validateRequest' => \Jkirkby91\LumenRestServerComponent\Http\Middleware\ValidateRequestMiddleware::class]);
     }
 
     /**

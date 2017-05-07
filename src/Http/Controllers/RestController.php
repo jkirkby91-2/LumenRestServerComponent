@@ -31,7 +31,7 @@ abstract class RestController extends Controller implements ResourceResponseCont
      */
     private $privateHeaders = [
         'Rest-Server'    => 'Jkirkby91\\LumenRestServerComponent',
-        'Version'        => '0.0.1',
+        'Version'        => 'Alpha-1.0.1',
         'content-type'   => 'text/json'
     ]; //@TODO hook headers into our responses
 

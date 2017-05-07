@@ -90,55 +90,16 @@ abstract class ResourceController extends RestController implements ResourceCont
     /**
      * @param ServerRequestInterface $request
      * @return mixed
-     * @TODO MAKE THIS AN ABSTRACT FUNCTION  BUT THEN ALL SUB CLASSES MUST IMPLEMENT 
      */
-    public function store(ServerRequestInterface $request)
-    {
-
-        trigger_error("Deprecated function called.", E_USER_NOTICE);
-        throw new \Exception('function deprecated');
-        
-        // $entity = $request->getParsedBody();
-
-        // $data = $this->repository->store($entity);
-
-        //@TODO SOME VALIDTION
-//        try
-//        {
-//            $v = \Validator::make($data, $this->validationRules);
-//            if($v->fails())
-//            {
-//                throw new \Exception("ValidationException");
-//            }
-//            $data = $this->repository->create($data);
-//            return $this->createdResponse($data);
-//        } catch(\Exception $ex)
-//        {
-//            $data = ['form_validations' => $v->errors(), 'exception' => $ex->getMessage()];
-//            return $this->clientErrorResponse($data);
-//        }
-
-        // return $this->createdResponse(Fractal()
-        //     ->item($data)
-        //     ->transformWith($this->transformer)
-        //     ->serializeWith(new ArraySerialization())
-        //     ->toJson());
-
-    }
+    abstract public function store(ServerRequestInterface $request);
 
     /**
      * @param ServerRequestInterface $request
      * @param $id
      * @return mixed|void
      * @throws \Exception
-     * @TODO MAKE THIS AN ABSTRACT FUNCTION  BUT THEN ALL SUB CLASSES MUST IMPLEMENT
      */
-    public function update(ServerRequestInterface $request, $id)
-    {
-        //@TODO make function abstact
-        trigger_error("Deprecated function called.", E_USER_NOTICE);
-        throw new \Exception('function deprecated');
-    }
+    abstract public function update(ServerRequestInterface $request, $id);
 
     /**
      * @param $id
