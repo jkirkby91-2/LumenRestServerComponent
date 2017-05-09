@@ -5,6 +5,7 @@ namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 use Psr\Http\Message\ServerRequestInterface;
 use Spatie\Fractal\ArraySerializer AS ArraySerialization;
 use Jkirkby91\Boilers\RestServerBoiler\ResourceControllerContract;
+use Jkirkby91\LumenRestServerComponent\Libraries\ResourceResponseTrait;
 use Jkirkby91\LumenRestServerComponent\Http\Controllers\RestController;
 use Jkirkby91\Boilers\RestServerBoiler\Exceptions\NotFoundHttpException;
 use Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnauthorizedHttpException;
@@ -19,6 +20,9 @@ use Jkirkby91\Boilers\RepositoryBoiler\ResourceRepositoryContract AS ResourceRep
  */
 abstract class ResourceController extends RestController implements ResourceControllerContract
 {
+
+    use ResourceResponseTrait;
+
     /**
      * @var ResourceRepository
      */

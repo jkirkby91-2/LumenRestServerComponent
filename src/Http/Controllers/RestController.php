@@ -5,7 +5,6 @@ namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 use Illuminate\Routing\Controller;
 use Psr\Http\Message\ServerRequestInterface;
 use Spatie\Fractal\ArraySerializer as ArraySerialization;
-use Jkirkby91\LumenRestServerComponent\Libraries\ResponseTrait;
 use Jkirkby91\Boilers\RestServerBoiler\ResourceResponseContract;
 use Jkirkby91\Boilers\RestServerBoiler\Exceptions\NotFoundHttpException;
 use Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnauthorizedHttpException;
@@ -19,10 +18,8 @@ use Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException;
  * @package Jkirkby91\LumenRestServerComponent\Http\Controllers
  * @author James Kirkby <jkirkby91@gmail.com>
  */
-abstract class RestController extends Controller implements ResourceResponseContract
+abstract class RestController extends Controller
 {
-
-    use ResponseTrait;
 
     public $user;    
 

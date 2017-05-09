@@ -6,13 +6,13 @@ use Zend\Diactoros;
 use Spatie\Fractal\Fractal;
 
 /**
- * Class ResponseTrait
+ * Class ResourceResponseTrait
  *
  * @package Jkirkby91\LumenRestServerComponent\Libraries
  * @author James Kirkby <jkirkby91@gmail.com>
  * @TODO abstract this into its own package
  */
-trait ResponseTrait
+trait ResourceResponseTrait
 {
     /**
      * @param $data
