@@ -26,7 +26,7 @@ abstract class AbstractValidateRequest implements ValidateRequestContract
     public function ValidateRequest(ServerRequestInterface $request)
     {
         $this->validator = app()->make('validator');
-        $method =$request->getMethod();
+        $method = $request->getMethod();
         $rules = $this->rules();
 
         if($rules === null){

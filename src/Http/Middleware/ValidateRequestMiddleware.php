@@ -17,7 +17,7 @@ class ValidateRequestMiddleware
      * @param  string  $role
      * @return mixed
      */
-    public function handle(ServerRequestInterface $request, Closure $next,$requestValidator)
+    public function handle(ServerRequestInterface $request, Closure $next, $requestValidator)
     {
         $factory = app()->make('validateRequestFactory');
 
