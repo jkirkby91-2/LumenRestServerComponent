@@ -3,6 +3,7 @@
 namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 
 use Spatie\Fractal\ArraySerializer as ArraySerialization;
+use Jkirkby91\LumenRestServerComponent\Libraries\ResourceResponseTrait;
 
 /**
  * Class PingController
@@ -12,7 +13,7 @@ use Spatie\Fractal\ArraySerializer as ArraySerialization;
  */
 class PingController extends \Jkirkby91\LumenRestServerComponent\Http\Controllers\RestController
 {
-    use \Jkirkby91\LumenRestServerComponent\Libraries\ResponseTrait;
+    use ResourceResponseTrait;
     /**
      * @return \GuzzleHttp\Psr7\Response
      */
