@@ -27,17 +27,18 @@ abstract class AbstractValidateRequest implements ValidateRequestContract
     {
         $this->validator = app()->make('validator');
         $method = $request->getMethod();
-        $rules = $this->rules();
+        $rules = $this->rules($request);
 
         if($rules === null){
           return true;
         }
 
         try {
-          $this->validator->validate($request->getParsedBody(),$rules[$method]);        
-        } catch (ValidationException $e) {
-          throw new UnprocessableEntityException;
+          $this->validator->validate($request->getParsedBody(),$rules[$method]);
+        } catch (ValidationException $e){
+          throw new \Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException;
         }
+
     }
 
 }
