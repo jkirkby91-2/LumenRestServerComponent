@@ -15,10 +15,10 @@
         "zendframework/zend-diactoros": "^1.3",
         "Jkirkby91/lumenpsr7cors": "dev-master",
         "symfony/psr-http-message-bridge": "^1.0",
-        "jkirkby91/DoctrineNodeEntity": "dev-master",
-        "jkirkby91/DoctrineRepositories": "dev-master",
-        "jkirkby91/IlluminateRequestPSR7Adapter": "dev-master",
-        "jkirkby91/RestServerBoiler": "dev-master"
+        "jkirkby91/DoctrineNodeEntity": "~1.0",
+        "jkirkby91/DoctrineRepositories": "~1.0",
+        "jkirkby91/IlluminateRequestPSR7Adapter": "~1.0",
+        "jkirkby91/RestServerBoiler": "~1.0"
     },
     "require-dev": {
         "jkirkby91/NodeEntityBoiler": "dev-master",
