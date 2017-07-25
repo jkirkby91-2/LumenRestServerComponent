@@ -109,8 +109,7 @@
 
 			$paginatedResults = $paginatedResults->toArray();
 
-			if(isset($paginatedResults))
-			{
+			if (isset($paginatedResults)) {
 				$paginatedResults['data'] = $this->collection($paginatedResults['data'])
 					->transformWith($this->transformer)
 					->serializeWith(new ArraySerialization());
