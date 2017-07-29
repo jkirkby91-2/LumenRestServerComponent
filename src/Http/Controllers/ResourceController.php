@@ -100,18 +100,63 @@
 		 * store()
 		 * @param \Psr\Http\Message\ServerRequestInterface $request
 		 *
-		 * @return mixed
+		 * @return \Zend\Diactoros\Response\JsonResponse
 		 */
-		abstract public function store(ServerRequestInterface $request);
+		public function store(ServerRequestInterface $request) : \Zend\Diactoros\Response\JsonResponse
+		{
+			$payload = $request->getParsedbody();
+
+			$entity = str_replace('Controller','Entity',get_class($this));
+			$cols = app()->make('em')->getClassMetadata(get_class($entity))->getColumnNames();
+
+			$entity = new $entity;
+
+			foreach ($cols as $col) {
+				$setter = 'set'.ucfirst($col);
+				if (method_exists($this, $setter)) {
+					$entity = $entity->$setter($payload[$col]);
+				}
+			}
+
+			$entity = $this->repository->store($entity);
+
+			$resource = $this->item($entity)
+				->transformWith($this->transformer)
+				->serializeWith($this->serializer);
+
+			return $this->createdResponse($resource);
+		}
 
 		/**
 		 * update()
 		 * @param \Psr\Http\Message\ServerRequestInterface $request
 		 * @param                                          $id
 		 *
-		 * @return mixed
+		 * @return \Zend\Diactoros\Response\JsonResponse
 		 */
-		abstract public function update(ServerRequestInterface $request, $id);
+		public function update(ServerRequestInterface $request, $id) : \Zend\Diactoros\Response\JsonResponse
+		{
+			$payload = $request->getParsedbody();
+
+			$entity = $this->repository->findOneBy($id);
+			$cols = app()->make('em')->getClassMetadata(get_class($entity))->getColumnNames();
+
+			foreach ($cols as $col) {
+				$setter = 'set'.ucfirst($col);
+				if (method_exists($this, $setter)) {
+					$entity = $entity->$setter($payload[$col]);
+				}
+			}
+
+			$entity = $this->repository->store($entity);
+
+			$resource = $this->item($entity)
+				->transformWith($this->transformer)
+				->serializeWith($this->serializer);
+
+			return $this->showResponse($resource);
+
+		}
 
 		/**
 		 * destroy()
