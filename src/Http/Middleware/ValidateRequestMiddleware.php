@@ -1,31 +1,39 @@
 <?php
 
-namespace Jkirkby91\LumenRestServerComponent\Http\Middleware;
+	namespace Jkirkby91\LumenRestServerComponent\Http\Middleware {
 
-use Closure;
-use Psr\Http\Message\ServerRequestInterface;
-use Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException;
+		use Closure;
+		use Psr\Http\Message\ServerRequestInterface;
+		use Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException;
+		use Symfony\Component\HttpFoundation\Response;
 
-class ValidateRequestMiddleware
-{
+		/**
+		 * Class ValidateRequestMiddleware
+		 *
+		 * @package Jkirkby91\LumenRestServerComponent\Http\Middleware
+		 * @author  James Kirkby <jkirkby@protonmail.ch>
+		 */
+		class ValidateRequestMiddleware
+		{
 
-    /**
-     * Run the request filter.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string  $role
-     * @return mixed
-     */
-    public function handle(ServerRequestInterface $request, Closure $next, $requestValidator)
-    {
-        $factory = app()->make('validateRequestFactory');
+			/**
+			 * handle()
+			 * @param \Psr\Http\Message\ServerRequestInterface $request
+			 * @param \Closure                                 $next
+			 * @param                                          $requestValidator
+			 *
+			 * @return \Symfony\Component\HttpFoundation\Response
+			 */
+			public function handle(ServerRequestInterface $request, Closure $next, $requestValidator) : Response
+			{
+				$factory = app()->make('validateRequestFactory');
 
-        $validator = $factory::createRequstValidation($requestValidator);
+				$validator = $factory::createRequestValidation($requestValidator);
 
-        $validator->ValidateRequest($request);
+				$validator->ValidateRequest($request);
 
-        return $next($request);
-    }
+				return $next($request);
+			}
 
-}
+		}
+	}
