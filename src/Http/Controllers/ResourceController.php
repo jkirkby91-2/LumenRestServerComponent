@@ -2,6 +2,7 @@
 
 	namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
 
+	use Illuminate\Http\JsonResponse;
 	use Psr\Http\Message\ServerRequestInterface;
 	use Spatie\Fractal\ArraySerializer AS ArraySerialization;
 	use Jkirkby91\Boilers\RestServerBoiler\ResourceControllerContract;
@@ -52,7 +53,7 @@
 		 *
 		 * @return \Zend\Diactoros\Response\JsonResponse
 		 */
-		public function index(ServerRequestInterface $request)
+		public function index(ServerRequestInterface $request) : \Zend\Diactoros\Response\JsonResponse
 		{
 			$page = $this->getPaginationPageFromRequest($request);
 
@@ -78,11 +79,12 @@
 
 		/**
 		 * show()
-		 * @param $id
+		 * @param \Psr\Http\Message\ServerRequestInterface $request
+		 * @param                                          $id
 		 *
 		 * @return \Zend\Diactoros\Response\JsonResponse
 		 */
-		public function show($id)
+		public function show(ServerRequestInterface $request, $id) : \Zend\Diactoros\Response\JsonResponse
 		{
 			if ($data = $this->repository->find($id))
 			{
@@ -160,11 +162,12 @@
 
 		/**
 		 * destroy()
-		 * @param $id
+		 * @param \Psr\Http\Message\ServerRequestInterface $request
+		 * @param                                          $id
 		 *
 		 * @return \Zend\Diactoros\Response\JsonResponse
 		 */
-		public function destroy($id)
+		public function destroy(ServerRequestInterface $request, $id) : \Zend\Diactoros\Response\JsonResponse
 		{
 			if(!$data = $this->repository->find($id))
 			{
