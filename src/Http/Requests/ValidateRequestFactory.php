@@ -1,23 +1,26 @@
 <?php
 
-namespace Jkirkby91\LumenRestServerComponent\Http\Requests;
+	namespace Jkirkby91\LumenRestServerComponent\Http\Requests {
 
-/**
- * Class RequestValidationFactory
- *
- * @package Jkirkby91\LumenRestServerComponent\Http\Middleware
- * @author James Kirkby <me@jameskirkby.com>
- */
-class ValidateRequestFactory
-{
+		/**
+		 * Class ValidateRequestFactory
+		 *
+		 * @package Jkirkby91\LumenRestServerComponent\Http\Requests
+		 * @author  James Kirkby <jkirkby@protonmail.ch>
+		 */
+		class ValidateRequestFactory
+		{
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return mixed|void
-     */
-    public static function createRequstValidation($requestValidator)
-    {
-      return new $requestValidator;
-    }
+			/**
+			 * createRequestValidation()
+			 * @param $requestValidator
+			 *
+			 * @return \Jkirkby91\LumenRestServerComponent\Http\Requests\AbstractValidateRequest
+			 */
+			public static function createRequestValidation($requestValidator)
+			{
+				return new $requestValidator;
+			}
 
-}
+		}
+	}

@@ -1,44 +1,60 @@
 <?php
 
-namespace Jkirkby91\LumenRestServerComponent\Http\Requests;
+	namespace Jkirkby91\LumenRestServerComponent\Http\Requests {
 
-use Closure;
-use Psr\Http\Message\ServerRequestInterface;
-use Jkirkby91\LumenRestServerComponent\Contracts\ValidateRequestContract;
-use Illuminate\Validation\ValidationException;
-use Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException;
+		use Laravel\Lumen\Routing\Closure;
+		use Psr\{
+			Http\Message\ServerRequestInterface
+		};
 
-/**
- * Class AbstractMiddleware
- *
- * @package Jkirkby91\LumenRestServerComponent\Http\Middleware
- * @author James Kirkby <hello@jameskirkby.com>
- */
-abstract class AbstractValidateRequest implements ValidateRequestContract
-{
+		use Illuminate\{
+			Validation\ValidationException
+		};
 
-    protected $validator;
+		use Jkirkby91\{
+			LumenRestServerComponent\Contracts\ValidateRequestContract, Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException
+		};
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return mixed|void
-     */
-    public function ValidateRequest(ServerRequestInterface $request)
-    {
-        $this->validator = app()->make('validator');
-        $method = $request->getMethod();
-        $rules = $this->rules($request);
+		/**
+		 * Class AbstractMiddleware
+		 *
+		 * @package Jkirkby91\LumenRestServerComponent\Http\Middleware
+		 * @author James Kirkby <hello@jameskirkby.com>
+		 */
+		abstract class AbstractValidateRequest implements ValidateRequestContract
+		{
 
-        if($rules === null){
-          return true;
-        }
+			/**
+			 * @var \Illuminate\Validation\Validator $param
+			 */
+			protected $validator;
 
-        try {
-          $this->validator->validate($request->getParsedBody(),$rules[$method]);
-        } catch (ValidationException $e){
-          throw new \Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException;
-        }
+			/**
+			 * validateRequest()
+			 * @param \Psr\Http\Message\ServerRequestInterface $request
+			 *
+			 * @return bool|mixed
+			 * @throws \Illuminate\Validation\ValidationException
+			 */
+			public function validateRequest(ServerRequestInterface $request)
+			{
+				$this->validator = app()->make('validator');
 
-    }
 
-}
+				$method = $request->getMethod();
+				$rules = $this->rules($request);
+
+				if ($rules === null){
+					return true;
+				}
+
+				$this->validator = $this->validator->make($request->getParsedBody(),$rules[$method]);
+
+				try {
+					$this->validator->validate();
+				} catch (ValidationException $e){
+					throw new \Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException;
+				}
+			}
+		}
+	}

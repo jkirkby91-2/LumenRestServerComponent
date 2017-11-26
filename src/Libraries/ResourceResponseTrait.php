@@ -32,10 +32,13 @@ trait ResourceResponseTrait
         return new Diactoros\Response\JsonResponse($data,200,$this->getHeaders());
     }
 
-    /**
-     * @param $data
-     * @return Diactoros\Response\JsonResponse
-     */
+	/**
+	 * listResponse()
+	 * @param $data
+	 *
+	 * @return \Zend\Diactoros\Response\JsonResponse
+	 * @throws \Exception
+	 */
     public function listResponse($data)
     {
         trigger_error("Deprecated function called.", E_USER_NOTICE);

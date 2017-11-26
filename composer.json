@@ -16,13 +16,11 @@
         "Jkirkby91/lumenpsr7cors": "~1.0",
         "symfony/psr-http-message-bridge": "^1.0",
         "jkirkby91/DoctrineNodeEntity": "~1.0",
-        "jkirkby91/DoctrineRepositories": "~1.0",
-        "jkirkby91/IlluminateRequestPSR7Adapter": "~1.0",
-        "jkirkby91/RestServerBoiler": "~1.0"
+        "jkirkby91/DoctrineRepositories": "~1.1",
+        "jkirkby91/IlluminateRequestPSR7Adapter": "~1.1",
+        "jkirkby91/RestServerBoiler": "~1.1"
     },
     "require-dev": {
-        "jkirkby91/NodeEntityBoiler": "dev-master",
-        "jkirkby91/RepositoryBoiler": "dev-master",
         "phpunit/phpunit": "4.*"
     },
     "autoload-dev": {
