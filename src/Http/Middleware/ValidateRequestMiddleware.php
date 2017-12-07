@@ -1,11 +1,21 @@
 <?php
+	declare(strict_types=1);
 
 	namespace Jkirkby91\LumenRestServerComponent\Http\Middleware {
 
 		use Closure;
-		use Psr\Http\Message\ServerRequestInterface;
-		use Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException;
-		use Symfony\Component\HttpFoundation\Response;
+
+		use Psr\{
+			Http\Message\ServerRequestInterface
+		};
+
+		use Jkirkby91\{
+			Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException
+		};
+
+		use Symfony\{
+			Component\HttpFoundation\Response
+		};
 
 		/**
 		 * Class ValidateRequestMiddleware
@@ -34,6 +44,5 @@
 
 				return $next($request);
 			}
-
 		}
 	}

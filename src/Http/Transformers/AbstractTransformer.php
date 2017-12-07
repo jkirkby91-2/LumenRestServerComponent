@@ -1,9 +1,17 @@
 <?php
+	declare(strict_types=1);
 
-namespace Jkirkby91\LumenRestServerComponent\Http\Transformers;
+	namespace Jkirkby91\LumenRestServerComponent\Http\Transformers {
 
-/**
- * Class AbstractTransformer
- * @package Jkirkby91\LumenRestServerComponent\Http\Transformers
- */
-abstract class AbstractTransformer extends \League\Fractal\TransformerAbstract {}
+		use League\{
+			Fractal\TransformerAbstract
+		};
+
+		/**
+		 * Class AbstractTransformer
+		 *
+		 * @package Jkirkby91\LumenRestServerComponent\Http\Transformers
+		 * @author  James Kirkby <jkirkby@protonmail.ch>
+		 */
+		abstract class AbstractTransformer extends TransformerAbstract {}
+	}

@@ -1,128 +1,143 @@
 <?php
+	declare(strict_types=1);
 
-namespace Jkirkby91\LumenRestServerComponent\Libraries;
+	namespace Jkirkby91\LumenRestServerComponent\Libraries {
 
-use Zend\Diactoros;
-use Spatie\Fractal\Fractal;
+		use Psr\Http\Message\ResponseInterface;
+		use Zend\{
+			Diactoros
+		};
 
-/**
- * Class ResourceResponseTrait
- *
- * @package Jkirkby91\LumenRestServerComponent\Libraries
- * @author James Kirkby <jkirkby91@gmail.com>
- * @TODO abstract this into its own package
- */
-trait ResourceResponseTrait
-{
-    /**
-     * @param $data
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function createdResponse($data)
-    {
-        return new Diactoros\Response\JsonResponse($data,201,$this->getHeaders());
-    }
+		use Spatie\{
+			Fractal\Fractal
+		};
 
-    /**
-     * @param $data
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function showResponse($data)
-    {
-        return new Diactoros\Response\JsonResponse($data,200,$this->getHeaders());
-    }
+		/**
+		 * Class ResourceResponseTrait
+		 *
+		 * @package Jkirkby91\LumenRestServerComponent\Libraries
+		 * @author James Kirkby <jkirkby91@gmail.com>
+		 * @TODO abstract this into its own package
+		 */
+		trait ResourceResponseTrait
+		{
 
-	/**
-	 * listResponse()
-	 * @param $data
-	 *
-	 * @return \Zend\Diactoros\Response\JsonResponse
-	 * @throws \Exception
-	 */
-    public function listResponse($data)
-    {
-        trigger_error("Deprecated function called.", E_USER_NOTICE);
-        throw new \Exception('function deprecated');
-        return new Diactoros\Response\JsonResponse($data,201,$this->getHeaders());
-    }
+			/**
+			 * createdResponse()
+			 * @param $data
+			 *
+			 * @return \Psr\Http\Message\ResponseInterface
+			 */
+			public function createdResponse($data) : ResponseInterface
+			{
+				return new Diactoros\Response\JsonResponse($data,201,$this->getHeaders());
+			}
 
-    /**
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function deletedResponse()
-    {
-        return new Diactoros\Response\JsonResponse([
-            'status' => 'success',
-            'msg' => 'Successfully deleted resource.'
-        ],204,$this->getHeaders());
-    }
+			/**
+			 * showResponse()
+			 * @param array $data
+			 *
+			 * @return \Psr\Http\Message\ResponseInterface
+			 */
+			public function showResponse(array $data) : ResponseInterface
+			{
+				return new Diactoros\Response\JsonResponse($data,200,$this->getHeaders());
+			}
 
-    /**
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function completedResponse()
-    {
-        return new Diactoros\Response\JsonResponse([
-            'status' => 'success',
-            'msg' => 'Successfully completed response.'
-        ],204,$this->getHeaders());
-    }
+			/**
+			 * deletedResponse()
+			 * @return \Psr\Http\Message\ResponseInterface
+			 */
+			public function deletedResponse() : ResponseInterface
+			{
+				return new Diactoros\Response\JsonResponse([
+					'status' => 'success',
+					'msg' => 'Successfully deleted resource.'
+				],204,$this->getHeaders());
+			}
 
-    /**
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function clientErrorResponse($msg = 'Un-processable Entity.')
-    {
-        return new Diactoros\Response\JsonResponse([
-            'status' => 'error',
-            'error' => 'entity.invalid',
-            'msg' => $msg
-        ],422,$this->getHeaders());
-    }
+			/**
+			 * completedResponse()
+			 * @return \Psr\Http\Message\ResponseInterface
+			 */
+			public function completedResponse() : ResponseInterface
+			{
+				return new Diactoros\Response\JsonResponse([
+					'status' => 'success',
+					'msg' => 'Successfully completed response.'
+				],204,$this->getHeaders());
+			}
 
-    /**
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function notFoundResponse()
-    {
-        return new Diactoros\Response\JsonResponse([
-            'status' => 'error',
-            'error' => 'Not Found',
-            'msg' => 'Resource Not Found.'
-        ],404,$this->getHeaders());
-    }
+			/**
+			 * clientErrorResponse()
+			 * @param string $msg
+			 *
+			 * @return \Psr\Http\Message\ResponseInterface
+			 */
+			public function clientErrorResponse(string $msg = 'Un-processable Entity.') : ResponseInterface
+			{
+				return new Diactoros\Response\JsonResponse([
+					'status' => 'error',
+					'error' => 'entity.invalid',
+					'msg' => $msg
+				],422,$this->getHeaders());
+			}
 
-    /**
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function UnauthorizedResponse()
-    {
-        return new Diactoros\Response\JsonResponse([
-            'status' => 'error',
-            'error' => 'Unauthorized',
-            'msg' => 'Credentials dont match.'
-        ],403,$this->getHeaders());
-    }
+			/**
+			 * notFoundResponse()
+			 * @return \Psr\Http\Message\ResponseInterface
+			 */
+			public function notFoundResponse() : ResponseInterface
+			{
+				return new Diactoros\Response\JsonResponse([
+					'status' => 'error',
+					'error' => 'Not Found',
+					'msg' => 'Resource Not Found.'
+				],404,$this->getHeaders());
+			}
 
-    /**
-     * @param $msg
-     * @return Diactoros\Response\JsonResponse
-     */
-    public function serverErrorResponse($msg = 'Internal Server Error')
-    {        
-        return new Diactoros\Response\JsonResponse([
-            'status' => 'error',
-            'error' => 'Server Error',
-            'msg' => $msg
-        ],500,$this->getHeaders());
-    }
+			/**
+			 * unauthorizedResponse()
+			 * @return \Psr\Http\Message\ResponseInterface
+			 */
+			public function unauthorizedResponse() : ResponseInterface
+			{
+				return new Diactoros\Response\JsonResponse([
+					'status' => 'error',
+					'error' => 'Unauthorized',
+					'msg' => 'Credentials dont match.'
+				],403,$this->getHeaders());
+			}
 
-    public function exceptionResponse($code,$msg)
-    {
-        return new Diactoros\Response\JsonResponse([
-            'status' => 'error',
-            'error'  => $code,
-            'msg'    => $msg
-        ],$code,$this->getHeaders());
-    }
-}
+			/**
+			 * serverErrorResponse()
+			 * @param string $msg
+			 *
+			 * @return \Psr\Http\Message\ResponseInterface
+			 */
+			public function serverErrorResponse(string $msg = 'Internal Server Error') : ResponseInterface
+			{
+				return new Diactoros\Response\JsonResponse([
+					'status' => 'error',
+					'error' => 'Server Error',
+					'msg' => $msg
+				],500,$this->getHeaders());
+			}
+
+			/**
+			 * exceptionResponse()
+			 * @param int    $code
+			 * @param string $msg
+			 *
+			 * @return \Psr\Http\Message\ResponseInterface
+			 */
+			public function exceptionResponse(int $code, string $msg) : ResponseInterface
+			{
+				return new Diactoros\Response\JsonResponse([
+					'status' => 'error',
+					'error'  => $code,
+					'msg'    => $msg
+				],$code,$this->getHeaders());
+			}
+		}
+	}

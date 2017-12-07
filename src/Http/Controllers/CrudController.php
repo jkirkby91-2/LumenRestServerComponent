@@ -1,72 +1,90 @@
 <?php
+	declare(strict_types=1);
 
-namespace Jkirkby91\LumenRestServerComponent\Http\Controllers;
+	namespace Jkirkby91\LumenRestServerComponent\Http\Controllers {
 
-use Psr\Http\Message\ServerRequestInterface;
-use Jkirkby91\Boilers\RestServerBoiler\CrudControllerContract;
-use Jkirkby91\Boilers\RepositoryBoiler\CrudRepositoryContract AS CrudRepository;
+		use Psr\{
+			Http\Message\ServerRequestInterface
+		};
 
-/**
- * Class ResourceController
- *
- * @package Jkirkby91\LumenRestServerComponent\Http\Controllers
- * @author James Kirkby <jkirkby91@gmail.com>
- */
-class CrudController extends RestController implements CrudControllerContract
-{
+		use Jkirkby91\{
+			Boilers\RestServerBoiler\CrudControllerContract,
+			Boilers\RepositoryBoiler\CrudRepositoryContract as CrudRepository
+		};
 
-    /**
-     * @var
-     */
-    protected $repository;
+		use Zend\Diactoros\Response\JsonResponse;
 
-    /**
-     * CrudController constructor.
-     *
-     * @param CrudRepository $repository
-     */
-    public function __construct(CrudRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+		/**
+		 * Class ResourceController
+		 *
+		 * @package Jkirkby91\LumenRestServerComponent\Http\Controllers
+		 * @author James Kirkby <jkirkby91@gmail.com>
+		 */
+		class CrudController extends RestController implements CrudControllerContract
+		{
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return \Zend\Diactoros\Response\JsonResponse
-     */
-    public function create(ServerRequestInterface $request)
-    {
-        $entity = $request->getParsedBody();
-        $entity = $this->repository->create($entity);
-        return $this->createdResponse(['status' => 'success', 'entity_id' => $entity->getId()]);
-    }
+			/**
+			 * @var CrudRepository $repository
+			 */
+			protected $repository;
 
-    /**
-     * @param $id
-     * @return bool
-     */
-    public function read($id)
-    {
-        return $this->repository->read($id);
-    }
+			/**
+			 * CrudController constructor.
+			 *
+			 * @param \Jkirkby91\Boilers\RepositoryBoiler\CrudRepositoryContract $repository
+			 */
+			public function __Construct(CrudRepository $repository)
+			{
+				parent::__construct();
+				$this->repository = $repository;
+			}
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return bool
-     */
-    public function update(ServerRequestInterface $request)
-    {
-        $entity = $request->getParsedBody();
-        $entity = $this->repository->update($entity);
-        return $this->createdResponse(['status' => 'success', 'entity_id' => $entity->getId()]);
-    }
+			/**
+			 * create()
+			 * @param \Psr\Http\Message\ServerRequestInterface $request
+			 *
+			 * @return \Zend\Diactoros\Response\JsonResponse
+			 */
+			public function create(ServerRequestInterface $request) : JsonResponse
+			{
+				$entity = $request->getParsedBody();
+				$entity = $this->repository->create($entity);
+				return $this->createdResponse(['status' => 'success', 'entity_id' => $entity->getId()]);
+			}
 
-    /**
-     * @param $id
-     * @return bool
-     */
-    public function delete($id)
-    {
-        return $this->repository->delete($id);
-    }
-}
+			/**
+			 * read()
+			 * @param int $id
+			 *
+			 * @return \Zend\Diactoros\Response\JsonResponse
+			 */
+			public function read(int $id) : JsonResponse
+			{
+				return $this->repository->read($id);
+			}
+
+			/**
+			 * update()
+			 * @param \Psr\Http\Message\ServerRequestInterface $request
+			 *
+			 * @return \Zend\Diactoros\Response\JsonResponse
+			 */
+			public function update(ServerRequestInterface $request) : JsonResponse
+			{
+				$entity = $request->getParsedBody();
+				$entity = $this->repository->update($entity);
+				return $this->createdResponse(['status' => 'success', 'entity_id' => $entity->getId()]);
+			}
+
+			/**
+			 * delete()
+			 * @param int $id
+			 *
+			 * @return \Zend\Diactoros\Response\JsonResponse
+			 */
+			public function delete(int $id) : JsonResponse
+			{
+				return $this->repository->delete($id);
+			}
+		}
+	}

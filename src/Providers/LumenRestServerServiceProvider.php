@@ -1,10 +1,16 @@
 <?php
+	declare(strict_types=1);
 
 	namespace Jkirkby91\LumenRestServerComponent\Providers {
 
-		use Illuminate\Support\ServiceProvider;
-		use Jkirkby91\IlluminateRequestPSR7Adapter\Middleware\PSR7AdapterMiddleware;
-		use Jkirkby91\LumenRestServerComponent\Http\Requests\ValidateRequestFactory;
+		use Illuminate\{
+			Support\ServiceProvider
+		};
+
+		use Jkirkby91\{
+			IlluminateRequestPSR7Adapter\Middleware\PSR7AdapterMiddleware,
+			LumenRestServerComponent\Http\Requests\ValidateRequestFactory
+		};
 
 		/**
 		 * Class LumenRestServerServiceProvider

@@ -1,6 +1,11 @@
 <?php
+	declare(strict_types=1);
 
 	namespace Jkirkby91\LumenRestServerComponent\Http\Requests {
+
+		use Jkirkby91\{
+			LumenRestServerComponent\Http\Requests\AbstractValidateRequest
+		};
 
 		/**
 		 * Class ValidateRequestFactory
@@ -13,11 +18,11 @@
 
 			/**
 			 * createRequestValidation()
-			 * @param $requestValidator
+			 * @param string $requestValidator
 			 *
 			 * @return \Jkirkby91\LumenRestServerComponent\Http\Requests\AbstractValidateRequest
 			 */
-			public static function createRequestValidation($requestValidator)
+			public static function createRequestValidation(string $requestValidator) : AbstractValidateRequest
 			{
 				return new $requestValidator;
 			}

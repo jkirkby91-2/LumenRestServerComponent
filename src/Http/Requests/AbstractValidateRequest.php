@@ -1,8 +1,12 @@
 <?php
+	declare(strict_types=1);
 
 	namespace Jkirkby91\LumenRestServerComponent\Http\Requests {
 
-		use Laravel\Lumen\Routing\Closure;
+		use Laravel\{
+			Lumen\Routing\Closure
+		};
+
 		use Psr\{
 			Http\Message\ServerRequestInterface
 		};
@@ -12,7 +16,8 @@
 		};
 
 		use Jkirkby91\{
-			LumenRestServerComponent\Contracts\ValidateRequestContract, Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException
+			LumenRestServerComponent\Contracts\ValidateRequestContract,
+			Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException
 		};
 
 		/**
@@ -33,27 +38,26 @@
 			 * validateRequest()
 			 * @param \Psr\Http\Message\ServerRequestInterface $request
 			 *
-			 * @return bool|mixed
-			 * @throws \Illuminate\Validation\ValidationException
+			 * @return bool
 			 */
-			public function validateRequest(ServerRequestInterface $request)
+			public function validateRequest(ServerRequestInterface $request) : bool
 			{
 				$this->validator = app()->make('validator');
-
 
 				$method = $request->getMethod();
 				$rules = $this->rules($request);
 
 				if ($rules === null){
-					return true;
+					return TRUE;
 				}
 
 				$this->validator = $this->validator->make($request->getParsedBody(),$rules[$method]);
 
 				try {
 					$this->validator->validate();
+					return TRUE;
 				} catch (ValidationException $e){
-					throw new \Jkirkby91\Boilers\RestServerBoiler\Exceptions\UnprocessableEntityException;
+					throw new UnprocessableEntityException;
 				}
 			}
 		}

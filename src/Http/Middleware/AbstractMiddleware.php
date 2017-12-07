@@ -1,10 +1,17 @@
 <?php
+	declare(strict_types=1);
 
 	namespace Jkirkby91\LumenRestServerComponent\Http\Middleware {
 
 		use Closure;
-		use Psr\Http\Message\ServerRequestInterface;
-		use Jkirkby91\LumenRestServerComponent\Contracts\MiddlewareContract;
+
+		use Psr\{
+			Http\Message\ServerRequestInterface
+		};
+
+		use Jkirkby91\{
+			LumenRestServerComponent\Contracts\MiddlewareContract
+		};
 
 		/**
 		 * Class AbstractMiddleware
